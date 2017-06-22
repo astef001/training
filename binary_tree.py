@@ -1,4 +1,3 @@
-from collections import deque
 import unittest
 
 
@@ -7,20 +6,16 @@ class BinaryTree(object):
         self.key = binary_tree[0]
         self.left_sub_tree = binary_tree[1]
         self.right_sub_tree = binary_tree[2]
+        self.stack = [(self.key,
+                       self.left_sub_tree,
+                       self.right_sub_tree)]
 
     def __iter__(self):
-        self.stack = deque([(self.key,
-                             self.left_sub_tree,
-                             self.right_sub_tree)])
-        return self
-
-    def __next__(self):
-        while len(self.stack):
-            current = self.stack.popleft()
-            if current is not None:
-                self.stack.extend([current[1], current[2]])
-                return current[0]
-        raise StopIteration
+        for x in self.stack:
+            if x is not None:
+                self.stack.extend([x[1], x[2]])
+                yield x[0]
+            del x
 
 
 class TestBinaryTree(unittest.TestCase):
