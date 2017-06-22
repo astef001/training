@@ -5,15 +5,11 @@ import os.path
 def read_dicts(file):
     dictionaries = []
     with open(file, "r") as f:
-        while True:
+        for inf in f:
             temp_dict = {}
-            inf = f.readline()
-            if not inf:
-                break
-            inf = inf.rstrip("\n\r")
-            inf = str.split(inf, ' ')
-            for i in range(0, len(inf)-1, 2):
-                temp_dict[format(inf[i])] = inf[i+1]
+            inf = inf.split()
+            for (k, v) in zip(inf[0::2], inf[1::2]):
+                temp_dict[k] = v
             dictionaries.append(temp_dict)
     return dictionaries
 
