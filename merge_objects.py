@@ -22,10 +22,10 @@ def merge_dict(obj_a, obj_b):
 
 class TestMerge(unittest.TestCase):
     def setUp(self):
-        self.__obj_a = {'x': [1, 2, 3], 'y': 1, 'z': set([1, 2, 3]),
+        self.obj_a = {'x': [1, 2, 3], 'y': 1, 'z': set([1, 2, 3]),
                         'w': 'qweqwe', 't': {'a': [1, 2]}, 'm': [1]}
 
-        self.__obj_b = {'x': [4, 5, 6],
+        self.obj_b = {'x': [4, 5, 6],
                         'y': 4,
                         'z': set([4, 2, 3]),
                         'w': 'asdf',
@@ -33,7 +33,7 @@ class TestMerge(unittest.TestCase):
                         'm': "wer",
                         'different_key': "a value"}
 
-        self.__result = {'x': [1, 2, 3, 4, 5, 6],
+        self.result = {'x': [1, 2, 3, 4, 5, 6],
                          'y': 5,
                          'z': set([1, 2, 3, 4]),
                          'w': 'qweqweasdf',
@@ -44,8 +44,8 @@ class TestMerge(unittest.TestCase):
     def test_void_params(self):
         self.assertEqual(merge_dict({}, {}), {})
 
-    def test_one_void_param(self):
-        self.assertEqual(merge_dict(self.__obj_a, {}), self.__obj_a)
+    def test_one_empty_param(self):
+        self.assertEqual(merge_dict(self.obj_a, {}), self.obj_a)
 
     def test_merge(self):
-        self.assertEqual(merge_dict(self.__obj_a, self.__obj_b), self.__result)
+        self.assertEqual(merge_dict(self.obj_a, self.obj_b), self.result)
