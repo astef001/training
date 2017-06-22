@@ -15,7 +15,7 @@ def merge(obj_a, obj_b):
 
 def merge_dict(obj_a, obj_b):
     result = {}
-    for k in (list(obj_a.keys()) + list(obj_b.keys())):
+    for k in list(obj_a) + list(obj_b):
         result[k] = merge(obj_a.get(k), obj_b.get(k))
     return result
 
