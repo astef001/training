@@ -10,6 +10,8 @@ def merge(obj_a, obj_b):
         return obj_a | obj_b
     if isinstance(obj_a, dict):
         return merge_dict(obj_a, obj_b)
+    if isinstance(obj_a, str):
+        return "{obj_a}{obj_b}".format(obj_a=obj_a, obj_b=obj_b)
     return obj_a + obj_b
 
 
