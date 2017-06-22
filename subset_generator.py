@@ -2,12 +2,12 @@ import unittest
 
 
 def subset_generator(elem):
-    if len(elem) > 0:
+    try:
         head = set([elem.pop()])
         for i in subset_generator(elem):
             yield head.union(i)
             yield i
-    else:
+    except KeyError:
         yield set()
 
 
