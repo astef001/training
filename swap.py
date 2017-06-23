@@ -1,15 +1,17 @@
 import collections
 import unittest
+import numbers
 
 
 def check_immutable(obj):
-    mutable_list = [list, dict, set]
-    if type(obj) in mutable_list:
+    immutable_list = [str, numbers.Number, tuple]
+    if [x for x in immutable_list if isinstance(obj, x)]:
+        if isinstance(obj, collections.Iterable):
+            for elem in obj:
+                if not check_immutable(elem):
+                    return False
+    else:
         return False
-    if isinstance(obj, collections.Iterable):
-        for elem in obj:
-            if not check_immutable(elem):
-                return False
     return True
 
 
