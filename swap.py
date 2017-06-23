@@ -8,36 +8,36 @@ def check_immutable(obj):
         return False
     if isinstance(obj, collections.Iterable):
         for elem in obj:
-            if type(elem) in mutable_list:
+            if not check_immutable(elem):
                 return False
     return True
 
 
 def swap(arg):
     result = {}
-    for k, v in arg.items():
 
+    for k, v in arg.items():
         if not check_immutable(v):
-            print("Swap is not possible")
             return False
         else:
-            if collections.Counter(arg.values())[v] > 1:
-                print("Swap is not possible")
+            if collections.Counter(list(arg.values()))[v] != 1:
                 return False
             result[v] = k
-
     return result
 
 
 class TestSwap(unittest.TestCase):
-    def testEmptyDict(self):
+    def test_empty_dict(self):
         self.assertEqual(swap({}), {})
 
-    def testMutableKey(self):
+    def test_mutable_key(self):
         self.assertEqual(swap({'a': (1, 2, [3])}), False)
 
-    def testDuplicateValue(self):
-        self.assertEqual(swap({'a': 123, 'b': 456, 'c': 123}), False)
-
-    def testSimpleDict(self):
+    def test_simple_dict(self):
         self.assertEqual(swap({'a': 123, 'b': 456}), {123: 'a', 456: 'b'})
+
+    def test_nested_tuples(self):
+        self.assertEqual(swap({'a': (1, (2, (3, {'b': 4})))}), False)
+
+    def test_duplicate_key(self):
+        self.assertEqual(swap({'a': 123, 'b': 456, 'c': 123}), False)
