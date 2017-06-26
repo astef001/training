@@ -1,27 +1,24 @@
 import time
 
 
-class TimeSlow(object):
-    @staticmethod
-    def get_time():
-        return time.time()
-
-    def __init__(self, threshold):
-        self.threshold = threshold
-
-    def __call__(self, f):
-        def wrapped_f():
-            start = self.get_time()
-            f()
-            stop = self.get_time()
-            if self.threshold and stop - start > self.threshold:
-                print("Threshold exceeded: {0}".format(stop-start))
-            else:
-                print("{0} executed in {1}".format(f.__name__, stop-start))
-        return wrapped_f
+def get_time():
+    return time.time()
 
 
-@TimeSlow(threshold=21)
+def time_slow(threshold):
+    def wrapped_func(f):
+        start = get_time()
+        result=f()
+        stop = get_time()
+        if threshold and stop - start > threshold:
+            return "Threshold exceeded: {0}".format(stop - start)
+
+        print("{0} executed in {1}".format(f.__name__, stop - start))
+        return result
+    return wrapped_func
+
+
+@time_slow(threshold=5)
 def test_slow():
     for i in range(0, 1000000000):
         pass
