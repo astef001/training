@@ -1,5 +1,6 @@
 import random
 import unittest
+import itertools
 
 
 class Card(object):
@@ -21,7 +22,7 @@ class Deck(object):
         self.cards = cards
 
     def add_card(self, card):
-        self.cards.extend(card)
+        self.cards.append(card)
 
     def remove_card(self, card):
         self.cards.remove(card)
@@ -39,14 +40,18 @@ class Deck(object):
                 card = self.cards.pop()
             except IndexError:
                 print("No more cards!")
-                return False
+                return None
             cards_list.append([card.symbol, card.number])
         return cards_list
 
 
 class Dealer(object):
-    def __init__(self, deck):
-        self.deck = deck
+    def __init__(self):
+        symbols = ["Hearts", "Tiles", "Clovers", "Pikes"]
+        numbers = list(range(1, 10))
+        numbers.extend(["A", "J", "Q", "K"])
+        cards = [Card(k, v) for (k, v) in itertools.product(symbols, numbers)]
+        self.deck = Deck(cards)
 
     def deal_cards(self, players):
         self.deck.shuffle()
@@ -54,27 +59,22 @@ class Dealer(object):
         for i in range(0, players):
             cards[i] = self.deck.get_cards(2)
             if not cards[i]:
-                return False
+                print("No more cards!")
+                return None
         cards["table"] = self.deck.get_cards(5)
         return cards
 
 
 class TestDealer(unittest.TestCase):
-    list_cards = [Card('Hearts', 2),
-                  Card("Hearts", "A"),
-                  Card("Tiles", 10),
-                  Card("Pikes", "J"),
-                  Card("Clovers", 6),
-                  Card("Pikes", "K"),
-                  Card("Tiles", "A"),
-                  Card("Clovers", "A"),
-                  Card("Pikes", "A")]
 
-    def testEmptyDeck(self):
-        self.assertEqual(Dealer(Deck([])).deal_cards(2), False)
-
-    def testTwoPlayers(self):
-        dealer = Dealer(Deck(self.list_cards))
+    def test_two_players(self):
+        dealer = Dealer()
         cards = dealer.deal_cards(2)
         self.assertEqual((2, 2, 5),
                          (len(cards[0]), len(cards[1]), len(cards["table"])))
+
+    def test_no_more_cards(self):
+        dealer = Dealer()
+        cards = dealer.deal_cards(27)
+        print(cards)
+        self.assertIsNone(cards)
