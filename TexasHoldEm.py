@@ -8,24 +8,14 @@ class Card(object):
         self.symbol = symbol
         self.number = number
 
-    @property
-    def get_symbol(self):
-        return self.symbol
-
-    @property
-    def get_number(self):
-        return self.number
-
 
 class Deck(object):
-    def __init__(self, cards):
+    def __init__(self):
+        symbols = ["Hearts", "Tiles", "Clovers", "Pikes"]
+        numbers = list(range(1, 10))
+        numbers.extend(["A", "J", "Q", "K"])
+        cards = [Card(k, v) for (k, v) in itertools.product(symbols, numbers)]
         self.cards = cards
-
-    def add_card(self, card):
-        self.cards.append(card)
-
-    def remove_card(self, card):
-        self.cards.remove(card)
 
     def shuffle(self):
         random.shuffle(self.cards)
@@ -47,11 +37,7 @@ class Deck(object):
 
 class Dealer(object):
     def __init__(self):
-        symbols = ["Hearts", "Tiles", "Clovers", "Pikes"]
-        numbers = list(range(1, 10))
-        numbers.extend(["A", "J", "Q", "K"])
-        cards = [Card(k, v) for (k, v) in itertools.product(symbols, numbers)]
-        self.deck = Deck(cards)
+        self.deck = Deck()
 
     def deal_cards(self, players):
         self.deck.shuffle()
