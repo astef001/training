@@ -2,6 +2,7 @@ import time
 from functools import wraps
 import unittest
 
+
 def get_time():
     return time.time()
 
@@ -34,6 +35,4 @@ class TestDecorator(unittest.TestCase):
         self.assertTrue(test_slow(10))
 
     def test_slow_function(self):
-        self.assertIn("Threshold exceeded: ",test_slow(1000000000))
-
-
+        self.assertIn("Threshold exceeded: ", test_slow(1000000000))
