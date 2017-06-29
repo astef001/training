@@ -20,8 +20,8 @@ class Deck(object):
     def shuffle(self):
         random.shuffle(self.cards)
 
-    def sort(self, func):
-        self.cards.sort(func)
+    def sort(self):
+        self.cards.sort()
 
     def get_cards(self, number=1):
         cards_list = []
