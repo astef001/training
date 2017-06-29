@@ -1,5 +1,6 @@
 import time
 from functools import wraps
+import unittest
 
 def get_time():
     return time.time()
@@ -12,17 +13,27 @@ def time_slow(threshold):
             start = get_time()
             result = f(*args, **kwargs)
             stop = get_time()
-            if threshold and stop - start > threshold:
-                return "Threshold exceeded: {0}".format(stop - start)
-            print("{0} executed in {1}".format(f.__name__, stop - start))
+            time_delta = stop - start
+            if threshold and time_delta > threshold:
+                return "Threshold exceeded: {0}".format(time_delta)
+            print("{0} executed in {1}".format(f.__name__, time_delta))
             return result
         return wrapper
     return wrapped_func
 
 
-@time_slow(threshold=22)
-def test_slow():
-    for i in range(0, 1000000000):
+@time_slow(threshold=20)
+def test_slow(max_range):
+    for i in range(max_range):
         pass
+    return True
 
-print(test_slow)
+
+class TestDecorator(unittest.TestCase):
+    def test_fast_function(self):
+        self.assertTrue(test_slow(10))
+
+    def test_slow_function(self):
+        self.assertIn("Threshold exceeded: ",test_slow(1000000000))
+
+
