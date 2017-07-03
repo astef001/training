@@ -3,7 +3,7 @@ import unittest
 
 class Singleton(type):
     def __init__(cls, name, bases, attrs, **kwargs):
-        super().__init__(name, bases, attrs)
+        super().__init__(name, bases, attrs, **kwargs)
         cls._has_instance = None
 
     def __call__(cls, *args, **kwargs):
@@ -12,10 +12,16 @@ class Singleton(type):
         return cls._has_instance
 
 
+
 class TestClass(metaclass=Singleton):
-    pass
+   def __init__(self, var_one, var_two):
+        self.var_one = var_one
+        self.var_two = var_two
 
 
 class TestSingleton(unittest.TestCase):
     def test_simple_singleton(self):
-        self.assertEqual(TestClass(), TestClass())
+        a=TestClass(1,2)
+        b=TestClass(3,4)
+        self.assertEqual((a.var_one, a.var_two),(b.var_one, b.var_two))
+        self.assertEqual(a,b)
