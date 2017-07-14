@@ -12,7 +12,6 @@ class Singleton(type):
         return cls._has_instance
 
 
-
 class TestClass(metaclass=Singleton):
    def __init__(self, var_one, var_two):
         self.var_one = var_one
